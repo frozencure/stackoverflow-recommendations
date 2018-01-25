@@ -2,7 +2,7 @@ import pandas as pd
 import time
 
 start = time.time()
-df = pd.read_csv('C:/Users/Iancu/PycharmProjects/Stackoverflow Recommendations/resources/Votes.csv')
+df = pd.read_csv('C:/Users/Iancu/PycharmProjects/Stackoverflow_Recommendations/resources/Votes.csv')
 end = time.time()
 total = end - start
 print(total)
