@@ -2,6 +2,8 @@ import pandas as pd
 import time
 import numpy as np
 from scipy import sparse
+import sklearn.preprocessing as pp
+from collaborativeFiltering.SparseDataframe import *
 
 path = 'C:/Users/Iancu/PycharmProjects/Stackoverflow_Recommendations/stackoverflow-recommendations/resources/Votes.csv'
 
@@ -59,16 +61,29 @@ def writeToCsv(df, path):
     df.to_csv(path_or_buf=path, columns= ['PostId', 'UserId'], index=False)
 
 
-def countFavourites(df, greaterThan):
+def countFavourites(df, greaterThan=None, smallerThan=None):
     newDf = df.dropna(axis = 0, how = 'any')
     counts = newDf.PostId.value_counts()
     #print(counts.head(25))
-    filteredCounts = counts[counts >= greaterThan]
+    filteredCounts = None
+    smallerCounts = None
+    if greaterThan is not None:
+        filteredCounts = counts[counts >= greaterThan]
+    if smallerThan is not None:
+        smallerCounts = counts[counts <= smallerThan]
     #print(filteredCounts.count)
-    return filteredCounts
+    return (filteredCounts, smallerCounts)
+
 
 def removeLowVotes(df, greaterThan):
-    willKeepItems = countFavourites(df, greaterThan)
+    willKeepItems = countFavourites(df, greaterThan=greaterThan)[0]
+    df = df[df['PostId'].isin(willKeepItems.index.tolist())]
+    #print(df[df['PostId'] == 4754152])
+    #print(df.head())
+    return df
+
+def removeHighVotes(df, smallerThan):
+    willKeepItems = countFavourites(df, smallerThan=smallerThan)[1]
     df = df[df['PostId'].isin(willKeepItems.index.tolist())]
     #print(df[df['PostId'] == 4754152])
     #print(df.head())
@@ -88,10 +103,42 @@ def removeTooManyFavourites(df, smallerThan):
     #print(df.head())
     return df
 
+def createSparseMatrix(df):
+    user_uniq = list(df.UserId.unique())
+    post_uniq = list(df.PostId.unique())
+    user_uniq.sort()
+    post_uniq.sort()
+    data = df['Vote'].tolist()
+    row = df.UserId.astype(pd.api.types.CategoricalDtype(categories = user_uniq)).cat.codes
+    column = df.PostId.astype(pd.api.types.CategoricalDtype(categories = post_uniq)).cat.codes
+    sparse_matrix = sparse.csc_matrix((data, (row, column)), shape = (len(user_uniq), len(post_uniq)))
+    return sparse_matrix
+
+def cosine_similarities(matrix):
+    col_normed_matrix = pp.normalize(matrix)
+    return col_normed_matrix.T * col_normed_matrix
+
+def getMappedUser(matrix, df, userId):
+    user_uniq = list(df.UserId.unique())
+    user_uniq.sort()
+    index = user_uniq.index(userId)
+    return matrix.getrow(index)
+
+def getMappedPost(matrix, df, postId):
+    post_uniq = list(df.PostId.unique())
+    post_uniq.sort()
+    index = post_uniq.index(postId)
+    return matrix.getcol(index)
+
 
 df = loadFilteredVotes('C:/Users/Iancu/PycharmProjects/Stackoverflow_Recommendations/stackoverflow-recommendations/resources/FilteredVotes.csv')
-filteredDf = removeLowVotes(df, 80)
-filteredDf = removeTooManyFavourites(filteredDf, 30)
-print(filteredDf.shape)
-matrix = createMatrix(filteredDf)
-#calculateCorreletions(matrix, 4754152)
+filteredDf = removeLowVotes(df, 30)
+filteredDf = removeHighVotes(filteredDf, 400)
+print(filteredDf.head())
+sparseDf = SparseDataframe(filteredDf)
+#similarities=cosine_similarities(sparseDf.csrMatrix)[sparseDf.getItemIndexById(9410),:]
+#array = similarities.toarray()
+dict = sparseDf.getTopItems(10, 1383598)
+print(dict)
+
+
