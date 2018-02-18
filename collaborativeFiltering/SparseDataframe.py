@@ -66,7 +66,7 @@ class SparseDataframe:
         itemIndex = self.getItemIndexById(itemId)
         return self.csrMatrix.getcol(itemIndex).nonzero()[0]
 
-    def getItemsIdsByUser(self, userId):
+    def getItemIdsByUser(self, userId):
         itemsIndexes = self.__getItemsIndexByUser(userId)
         itemsIds = []
         for index in itemsIndexes:
@@ -84,7 +84,7 @@ class SparseDataframe:
         col_normed_matrix = pp.normalize(self.csrMatrix)
         return col_normed_matrix.T * col_normed_matrix
 
-    def getTopItems(self, top, postId):
+    def getTopItems(self, top, postId, favouriteCount=float('inf'), minSimilarity=float('inf')):
         similarities = self.cosineSimilarities()[self.getItemIndexById(postId),:]
         similarities = similarities.toarray()
         indexSim = None

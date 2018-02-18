@@ -133,7 +133,6 @@ def getMappedPost(matrix, df, postId):
 
 df = loadFilteredVotes('C:/Users/Iancu/PycharmProjects/Stackoverflow_Recommendations/stackoverflow-recommendations/resources/FilteredVotes.csv')
 filteredDf = removeLowVotes(df, 30)
-filteredDf = removeHighVotes(filteredDf, 400)
 print(filteredDf.head())
 sparseDf = SparseDataframe(filteredDf)
 #similarities=cosine_similarities(sparseDf.csrMatrix)[sparseDf.getItemIndexById(9410),:]

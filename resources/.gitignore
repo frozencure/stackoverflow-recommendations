@@ -1,3 +1,7 @@
 #ignore all .csv and .xml files
 *.csv
 *.xml
+
+
+#except FilteredVotes.xml
+!FilteredVotes.xml
