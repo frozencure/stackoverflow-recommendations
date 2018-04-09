@@ -49,10 +49,10 @@ class SparseDataframe:
         return data
 
     def __setSparseMatrix(self):
-        rows = self.dataframe[self.dataframe.columns[1]].astype(pd.api.types.CategoricalDtype(categories=self.uniqueUsers)).cat.codes
-        columns = self.dataframe[self.dataframe.columns[0]].astype(pd.api.types.CategoricalDtype(categories=self.uniqueItems)).cat.codes
+        rows = self.dataframe[self.dataframe.columns[0]].astype(pd.api.types.CategoricalDtype(categories=self.uniqueItems)).cat.codes
+        columns = self.dataframe[self.dataframe.columns[1]].astype(pd.api.types.CategoricalDtype(categories=self.uniqueUsers)).cat.codes
         data = self.__getDataAsList()
-        csrMatrix = sparse.csc_matrix((data, (rows, columns)), shape=(len(self.uniqueUsers), len(self.uniqueItems)))
+        csrMatrix = sparse.csr_matrix((data, (rows, columns)), shape=(len(self.uniqueItems), len(self.uniqueUsers)))
         return csrMatrix
 
     def getItemVoteCount(self, itemId):
@@ -75,11 +75,11 @@ class SparseDataframe:
 
     def __getItemsIndexByUser(self, userId):
         userIndex = self.getUserIndexById(userId)
-        return self.csrMatrix.getrow(userIndex).nonzero()[1]
+        return self.csrMatrix.getcol(userIndex).nonzero()[0]
 
     def __getUsersIndexByItem(self, itemId):
         itemIndex = self.getItemIndexById(itemId)
-        return self.csrMatrix.getcol(itemIndex).nonzero()[0]
+        return self.csrMatrix.getrow(itemIndex).nonzero()[1]
 
     def getItemIdsByUser(self, userId):
         itemsIndexes = self.__getItemsIndexByUser(userId)
@@ -114,8 +114,8 @@ class SparseDataframe:
         if self.getItemIndexById(postId) == False:
             return False
         index = self.getItemIndexById(postId)
-        indexVector = self.csrMatrix[:, index]
-        cosSim = metrics.pairwise.cosine_similarity(indexVector.T, self.csrMatrix.T , dense_output=False)
+        indexVector = self.csrMatrix[index, :]
+        cosSim = metrics.pairwise.cosine_similarity(indexVector, self.csrMatrix, dense_output=False)
         similaritiesContainer = cosSim.toarray()
         similarities = similaritiesContainer[0]
         ind = np.argpartition(similarities, -top - 1)[-top - 1:]
