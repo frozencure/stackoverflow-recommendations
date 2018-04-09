@@ -3,10 +3,11 @@ from collaborativeFiltering.SparseDataframe import SparseDataframe
 from surprise import Reader, Dataset
 from surprise.prediction_algorithms import knns
 from surprise.model_selection import cross_validate
+from . import main
 
 
 def demo():
-    path = 'C:/Users/Iancu/PycharmProjects/Stackoverflow_Recommendations/stackoverflow-recommendations/resources/filteredVotes.gz'
+    path = main.getPath()
     sparseDf = SparseDataframe(greaterThan=100, csvPath=path)
     reader = Reader(rating_scale=(0, 1))
     data = Dataset.load_from_df(sparseDf.dataframe[['UserId', 'PostId', 'Votes']], reader)

@@ -2,6 +2,8 @@ import time
 import numpy as np
 import pandas as pd
 from collaborativeFiltering.SparseDataframe import *
+import os
+import pathlib
 
 def loadFilteredVotes(path):
     start = time.time()
@@ -14,10 +16,14 @@ def loadFilteredVotes(path):
     print(total)
     return df
 
+def getPath():
+    repo_path = str(pathlib.Path(os.getcwd()).parent)
+    return repo_path + '/resources/filteredVotes.gz'
+
 
 
 #df = loadFilteredVotes('C:/Users/Iancu/PycharmProjects/Stackoverflow_Recommendations/stackoverflow-recommendations/resources/FilteredVotes.csv')
-path = 'C:/Users/Iancu/PycharmProjects/Stackoverflow_Recommendations/stackoverflow-recommendations/resources/filteredVotes.gz'
+path = getPath()
 sparseDf = SparseDataframe(greaterThan=10, csvPath=path)
 print(sparseDf.dataframe.head())
 dict = sparseDf.getTopItemsCosineSim(postId=150505)
