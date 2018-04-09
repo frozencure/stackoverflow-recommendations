@@ -4,6 +4,6 @@
 *.gz
 
 
-#except FilteredVotes.xml
-#!FilteredVotes.xml
+#except FilteredVotes.csv
+!FilteredVotes.csv
 !filteredVotes.gz
