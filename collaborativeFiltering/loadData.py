@@ -60,6 +60,9 @@ def writeToCsv(df, path):
 
     df.to_csv(path_or_buf=path, columns= ['PostId', 'UserId'], index=False)
 
+def favouriteCountFor(itemId):
+    newDf = df.dropna(axis=0, how='any')
+    counts = newDf.PostId.value_counts()
 
 def countFavourites(df, greaterThan=None, smallerThan=None):
     newDf = df.dropna(axis = 0, how = 'any')
@@ -130,6 +133,10 @@ def getMappedPost(matrix, df, postId):
     index = post_uniq.index(postId)
     return matrix.getcol(index)
 
+def save_sparse_csr(filename, array):
+    np.savez_compressed(filename, data=array.data, indices=array.indices,
+             indptr=array.indptr, shape=array.shape)
+
 
 df = loadFilteredVotes('C:/Users/Iancu/PycharmProjects/Stackoverflow_Recommendations/stackoverflow-recommendations/resources/FilteredVotes.csv')
 filteredDf = removeLowVotes(df, 30)
@@ -137,7 +144,8 @@ print(filteredDf.head())
 sparseDf = SparseDataframe(filteredDf)
 #similarities=cosine_similarities(sparseDf.csrMatrix)[sparseDf.getItemIndexById(9410),:]
 #array = similarities.toarray()
-dict = sparseDf.getTopItems(10, 1383598)
+dict = sparseDf.getTopItems(10, 1383598, voteCountsUnder=500)
 print(dict)
+
 
 

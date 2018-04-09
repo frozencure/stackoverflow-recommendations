@@ -1,7 +1,8 @@
-#ignore all .csv and .xml files
+#ignore all .csv and .xml, .gz files
 *.csv
 *.xml
+*.gz
 
 
 #except FilteredVotes.xml
-!FilteredVotes.xml
+#!FilteredVotes.xml
