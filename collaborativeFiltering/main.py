@@ -23,8 +23,8 @@ def getPath():
 
 
 #df = loadFilteredVotes('C:/Users/Iancu/PycharmProjects/Stackoverflow_Recommendations/stackoverflow-recommendations/resources/FilteredVotes.csv')
-path = getPath()
-sparseDf = SparseDataframe(greaterThan=10, csvPath=path)
-print(sparseDf.dataframe.head())
-dict = sparseDf.getTopItemsCosineSim(postId=150505)
-print(dict)
+# path = getPath()
+# sparseDf = SparseDataframe(greaterThan=10, csvPath=path)
+# print(sparseDf.dataframe.head())
+# dict = sparseDf.getTopItemsCosineSim(postId=150505)
+# print(dict)
