@@ -27,8 +27,17 @@ for key, value in movielens.items():
 train = movielens['train']
 test = movielens['test']
 
-model = LightFM(learning_rate=0.05, loss='bpr', no_components=1)
-model.fit(train, epochs=10)
+model = LightFM(learning_rate=0.03, loss='bpr', no_components=10)
+#model.fit(train, epochs=30)
+model.fit_partial(train)
+test_precision = precision_at_k(model, test, k=3).mean()
+prev_test_prec = test_precision
+while test_precision >= prev_test_prec:
+    model.fit_partial(train)
+    prev_test_prec = test_precision
+    test_precision = precision_at_k(model, test, k=3).mean()
+    print('Precision: test %.2f.' % test_precision)
+
 #predictions = model.predict(user_ids=2, item_ids=np.arange(1681))
 # print(np.sort(predictions))
 items = model.item_embeddings[0,:]
@@ -40,14 +49,14 @@ print(len(item_repr))
 # for tuple in tuples:
 #     print(movielens['item_labels'][tuple[0]])
 #
-train_precision = precision_at_k(model, train, k=10).mean()
-test_precision = precision_at_k(model, test, k=10).mean()
+train_precision = precision_at_k(model, train, k=3).mean()
+#test_precision = precision_at_k(model, test, k=3).mean()
 
 train_auc = auc_score(model, train).mean()
 test_auc = auc_score(model, test).mean()
 
-train_recall = recall_at_k(model, train).mean()
-test_recall = recall_at_k(model, test).mean()
+train_recall = recall_at_k(model, train, k=10).mean()
+test_recall = recall_at_k(model, test, k=10).mean()
 
 print('Precision: train %.2f, test %.2f.' % (train_precision, test_precision))
 print('AUC: train %.2f, test %.2f.' % (train_auc, test_auc))

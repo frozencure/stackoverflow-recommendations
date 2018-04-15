@@ -15,9 +15,10 @@ class SparseDataframe:
         uniqueUsers: list of all unique users, should be first column
         uniqueItems: list of all unique items
         itemVoteCounts: list of each item and how many votes it has
+        hasItemAsRows: boolean variable which is used to specify the matrix setup: (items, users) or (users, items)
         csrMatrix: a sparse csr matrix that is built from the dataframe(check scipy.sparse)
     """
-    def __init__(self, dataframe=None, greaterThan=0, csvPath=None):
+    def __init__(self, dataframe=None, greaterThan=0, csvPath=None, hasItemsAsRows=True):
         """Will create a filtered dataframe by removing low voted items"""
         if csvPath is not None:
             self.dataframe = pd.read_csv(csvPath, compression='gzip')
@@ -31,6 +32,7 @@ class SparseDataframe:
         """Will populate the csr matrix and itemVoteCounts attributes"""
         self.uniqueUsers = self.__setUniqueUsers()
         self.uniqueItems = self.__setUniqueItems()
+        self.hasItemAsRows = hasItemsAsRows
         self.csrMatrix = self.__setSparseMatrix()
 
 
@@ -49,10 +51,19 @@ class SparseDataframe:
         return data
 
     def __setSparseMatrix(self):
-        rows = self.dataframe[self.dataframe.columns[0]].astype(pd.api.types.CategoricalDtype(categories=self.uniqueItems)).cat.codes
-        columns = self.dataframe[self.dataframe.columns[1]].astype(pd.api.types.CategoricalDtype(categories=self.uniqueUsers)).cat.codes
+        if self.hasItemAsRows:
+            rows = self.dataframe[self.dataframe.columns[0]].astype(pd.api.types.CategoricalDtype(categories=self.uniqueItems)).cat.codes
+            columns = self.dataframe[self.dataframe.columns[1]].astype(pd.api.types.CategoricalDtype(categories=self.uniqueUsers)).cat.codes
+        else:
+            columns = self.dataframe[self.dataframe.columns[0]].astype(
+                pd.api.types.CategoricalDtype(categories=self.uniqueItems)).cat.codes
+            rows = self.dataframe[self.dataframe.columns[1]].astype(
+                pd.api.types.CategoricalDtype(categories=self.uniqueUsers)).cat.codes
         data = self.__getDataAsList()
-        csrMatrix = sparse.csr_matrix((data, (rows, columns)), shape=(len(self.uniqueItems), len(self.uniqueUsers)))
+        if self.hasItemAsRows:
+            csrMatrix = sparse.csr_matrix((data, (rows, columns)), shape=(len(self.uniqueItems), len(self.uniqueUsers)))
+        else:
+            csrMatrix = sparse.csr_matrix((data, (rows, columns)), shape=(len(self.uniqueUsers), len(self.uniqueItems)))
         return csrMatrix
 
     def getItemVoteCount(self, itemId):
@@ -75,11 +86,17 @@ class SparseDataframe:
 
     def __getItemsIndexByUser(self, userId):
         userIndex = self.getUserIndexById(userId)
-        return self.csrMatrix.getcol(userIndex).nonzero()[0]
+        if self.hasItemAsRows:
+            return self.csrMatrix.getcol(userIndex).nonzero()[0]
+        else:
+            return self.csrMatrix.getrow(userIndex).nonzero()[1]
 
     def __getUsersIndexByItem(self, itemId):
         itemIndex = self.getItemIndexById(itemId)
-        return self.csrMatrix.getrow(itemIndex).nonzero()[1]
+        if self.hasItemAsRows:
+            return self.csrMatrix.getrow(itemIndex).nonzero()[1]
+        else:
+            return self.csrMatrix.getcol(itemIndex).nonzero()[0]
 
     def getItemIdsByUser(self, userId):
         itemsIndexes = self.__getItemsIndexByUser(userId)
@@ -114,8 +131,12 @@ class SparseDataframe:
         if self.getItemIndexById(postId) == False:
             return False
         index = self.getItemIndexById(postId)
-        indexVector = self.csrMatrix[index, :]
-        cosSim = metrics.pairwise.cosine_similarity(indexVector, self.csrMatrix, dense_output=False)
+        if self.hasItemAsRows:
+            indexVector = self.csrMatrix[index, :]
+            cosSim = metrics.pairwise.cosine_similarity(indexVector, self.csrMatrix, dense_output=False)
+        else:
+            indexVector = self.csrMatrix[:, index]
+            cosSim = metrics.pairwise.cosine_similarity(indexVector.T, self.csrMatrix.T, dense_output=False)
         similaritiesContainer = cosSim.toarray()
         similarities = similaritiesContainer[0]
         ind = np.argpartition(similarities, -top - 1)[-top - 1:]
@@ -124,10 +145,9 @@ class SparseDataframe:
         indexSim.sort(key=lambda x: x[1], reverse=True)
         idSim = []
         for elem in indexSim:
-            singleIdSim = []
-            singleIdSim.append(self.getItemIdFromIndex(elem[0]))
-            singleIdSim.append(elem[1])
-            idSim.append(singleIdSim)
+            id = self.getItemIdFromIndex(elem[0])
+            acc = elem[1]
+            idSim.append((id, acc))
         return idSim
 
     # def getTopItems(self, top, postId, voteCountsUnder=float('inf')):
