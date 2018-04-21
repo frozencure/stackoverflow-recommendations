@@ -2,6 +2,7 @@
 *.csv
 *.xml
 *.gz
+*.sqlite
 
 
 #except FilteredVotes.csv
