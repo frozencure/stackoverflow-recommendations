@@ -69,8 +69,8 @@ def removeNotVotedQuestions():
     unusedVotes = cursor.fetchall()
     for vote in unusedVotes:
         cursor.execute('''DELETE FROM vote WHERE id = (?)''', (vote[0],))
-        print('Delete vote: %s' % (vote[0]))
     db.commit()
+    logging.info('Removed all votes with invalid question ids')
 
     cursor.execute('''SELECT question.id FROM question
                     LEFT JOIN vote ON question.id = vote.questionId
@@ -78,8 +78,8 @@ def removeNotVotedQuestions():
     questionIds = cursor.fetchall()
     for question in questionIds:
         cursor.execute('''DELETE FROM question WHERE id = (?)''', (question[0],))
-        print('Delete question: %s' % (question[0]))
     db.commit()
+    logging.info('Removed all unvoted questions')
 
 
 def addQuestionTags():
@@ -94,8 +94,8 @@ def addQuestionTags():
             tagId = tagsDict.get(tag)
             row = (question[0], tagId)
             cursor.execute('''INSERT INTO question_tag(questionId, tagId) VALUES(?,?)''', row)
-            print('${0} inserted'.format(row))
     db.commit()
+    logging.info('Inserted all question-tag relations')
 
 
 def insert(tagsPath, questionsPath, votesPath):
@@ -108,6 +108,7 @@ def postInsertSetup():
     addQuestionTags()
 
 def main(tagsPath, questionsPath, votesPath):
+    logging.getLogger().setLevel(logging.INFO)
     setupTables()
     insert(tagsPath, questionsPath, votesPath)
     postInsertSetup()
