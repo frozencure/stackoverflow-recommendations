@@ -1,4 +1,4 @@
-from XMLParser.xmlParser import *
+from XMLParser.XmlParser import *
 import os
 
 

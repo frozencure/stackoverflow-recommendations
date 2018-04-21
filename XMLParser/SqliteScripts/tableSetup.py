@@ -1,5 +1,5 @@
 import sqlite3
-from XMLParser.xmlParser import XMLParser
+from XMLParser.XmlParser import XMLParser
 import logging
 
 

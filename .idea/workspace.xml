@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="02292f81-5e46-4aca-8f43-0ed90559c7cc" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/XMLParser/SqliteScripts/__init__.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/XMLParser/SqliteScripts/tableSetup.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/XMLParser/SqliteScripts/xmlToSqlite.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/XMLParser/__init__.py" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/XMLParser/xmlParser.py" afterPath="$PROJECT_DIR$/XMLParser/xmlParser.py" />
+      <change beforePath="$PROJECT_DIR$/XMLParser/SqliteScripts/tableSetup.py" afterPath="$PROJECT_DIR$/XMLParser/SqliteScripts/tableSetup.py" />
+      <change beforePath="$PROJECT_DIR$/XMLParser/xmlParser.py" afterPath="$PROJECT_DIR$/XMLParser/XmlParser.py" />
+      <change beforePath="$PROJECT_DIR$/XMLParser/xmlToCsv.py" afterPath="$PROJECT_DIR$/XMLParser/xmlToCsv.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -27,28 +24,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="xmlParser.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/XMLParser/xmlParser.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="490">
-              <caret line="61" column="8" lean-forward="false" selection-start-line="61" selection-start-column="8" selection-end-line="61" selection-end-column="8" />
-              <folding>
-                <element signature="e#0#22#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="xmlToCsv.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/XMLParser/xmlToCsv.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="10" column="26" lean-forward="false" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="tableSetup.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/XMLParser/SqliteScripts/tableSetup.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -56,38 +31,33 @@
               <caret line="5" column="2" lean-forward="false" selection-start-line="5" selection-start-column="2" selection-end-line="5" selection-end-column="2" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
-                <marker date="1524334767915" expanded="true" signature="571:732" ph="CREATE TABLE... question" />
-                <marker date="1524334767915" expanded="true" signature="817:974" ph="CREATE TABLE... tag" />
-                <marker date="1524334767915" expanded="true" signature="1064:1338" ph="CREATE TABLE... vote" />
-                <marker date="1524334767915" expanded="true" signature="1435:1775" ph="CREATE TABLE... question_tag" />
-                <marker date="1524334767915" expanded="true" signature="1968:2028" ph="INSERT INTO tag... " />
-                <marker date="1524334767915" expanded="true" signature="2276:2332" ph="INSERT INTO question... " />
-                <marker date="1524334767915" expanded="true" signature="2625:2687" ph="INSERT INTO question... " />
-                <marker date="1524334767915" expanded="true" signature="2901:3055" ph="SELECT vote.... vote" />
-                <marker date="1524334767915" expanded="true" signature="3151:3182" ph="DELETE FROM vote... " />
-                <marker date="1524334767915" expanded="true" signature="3283:3433" ph="SELECT quest... question" />
-                <marker date="1524334767915" expanded="true" signature="3301:3350" ph="SELECT * FRO... queestion" />
-                <marker date="1524334767915" expanded="true" signature="3533:3568" ph="DELETE FROM question... " />
-                <marker date="1524334767915" expanded="true" signature="3705:3732" ph="SELECT id, t... tag" />
-                <marker date="1524334767915" expanded="true" signature="3830:3859" ph="SELECT id, t... question" />
-                <marker date="1524334767915" expanded="true" signature="4160:4215" ph="INSERT INTO question_tag... " />
+                <marker date="1524334989533" expanded="true" signature="571:732" ph="CREATE TABLE... question" />
+                <marker date="1524334989533" expanded="true" signature="817:974" ph="CREATE TABLE... tag" />
+                <marker date="1524334989533" expanded="true" signature="1064:1338" ph="CREATE TABLE... vote" />
+                <marker date="1524334989533" expanded="true" signature="1435:1775" ph="CREATE TABLE... question_tag" />
+                <marker date="1524334989533" expanded="true" signature="1968:2028" ph="INSERT INTO tag... " />
+                <marker date="1524334989533" expanded="true" signature="2276:2332" ph="INSERT INTO question... " />
+                <marker date="1524334989533" expanded="true" signature="2625:2687" ph="INSERT INTO question... " />
+                <marker date="1524334989533" expanded="true" signature="2901:3055" ph="SELECT vote.... vote" />
+                <marker date="1524334989533" expanded="true" signature="3151:3182" ph="DELETE FROM vote... " />
+                <marker date="1524334989533" expanded="true" signature="3283:3433" ph="SELECT quest... question" />
+                <marker date="1524334989533" expanded="true" signature="3301:3350" ph="SELECT * FRO... queestion" />
+                <marker date="1524334989533" expanded="true" signature="3533:3568" ph="DELETE FROM question... " />
+                <marker date="1524334989533" expanded="true" signature="3705:3732" ph="SELECT id, t... tag" />
+                <marker date="1524334989533" expanded="true" signature="3830:3859" ph="SELECT id, t... question" />
+                <marker date="1524334989533" expanded="true" signature="4160:4215" ph="INSERT INTO question_tag... " />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="csvToSqlite.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/XMLParser/csvToSqlite.py">
+      <file leaf-file-name="XmlParser.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/XMLParser/XmlParser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="27" column="15" lean-forward="false" selection-start-line="26" selection-start-column="4" selection-end-line="27" selection-end-column="15" />
+            <state relative-caret-position="1037">
+              <caret line="61" column="8" lean-forward="false" selection-start-line="61" selection-start-column="8" selection-end-line="61" selection-end-column="8" />
               <folding>
-                <marker date="1519504526409" expanded="true" signature="200:248" ph="CREATE TABLE... user" />
-                <marker date="1519504526409" expanded="true" signature="290:342" ph="CREATE TABLE... question" />
-                <marker date="1519504526409" expanded="true" signature="400:738" ph="CREATE TABLE... vote" />
-                <marker date="1519504526409" expanded="true" signature="820:850" ph="INSERT INTO user... " />
-                <marker date="1519504526409" expanded="true" signature="943:977" ph="INSERT INTO question... " />
-                <marker date="1519504526409" expanded="true" signature="1118:1179" ph="INSERT INTO vote... " />
+                <element signature="e#0#22#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -652,9 +622,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/XMLParser/xmlParser.py">
+    <entry file="file://$PROJECT_DIR$/XMLParser/XmlParser.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="490">
+        <state relative-caret-position="1037">
           <caret line="61" column="8" lean-forward="false" selection-start-line="61" selection-start-column="8" selection-end-line="61" selection-end-column="8" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
@@ -668,21 +638,21 @@
           <caret line="5" column="2" lean-forward="false" selection-start-line="5" selection-start-column="2" selection-end-line="5" selection-end-column="2" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
-            <marker date="1524334767915" expanded="true" signature="571:732" ph="CREATE TABLE... question" />
-            <marker date="1524334767915" expanded="true" signature="817:974" ph="CREATE TABLE... tag" />
-            <marker date="1524334767915" expanded="true" signature="1064:1338" ph="CREATE TABLE... vote" />
-            <marker date="1524334767915" expanded="true" signature="1435:1775" ph="CREATE TABLE... question_tag" />
-            <marker date="1524334767915" expanded="true" signature="1968:2028" ph="INSERT INTO tag... " />
-            <marker date="1524334767915" expanded="true" signature="2276:2332" ph="INSERT INTO question... " />
-            <marker date="1524334767915" expanded="true" signature="2625:2687" ph="INSERT INTO question... " />
-            <marker date="1524334767915" expanded="true" signature="2901:3055" ph="SELECT vote.... vote" />
-            <marker date="1524334767915" expanded="true" signature="3151:3182" ph="DELETE FROM vote... " />
-            <marker date="1524334767915" expanded="true" signature="3283:3433" ph="SELECT quest... question" />
-            <marker date="1524334767915" expanded="true" signature="3301:3350" ph="SELECT * FRO... queestion" />
-            <marker date="1524334767915" expanded="true" signature="3533:3568" ph="DELETE FROM question... " />
-            <marker date="1524334767915" expanded="true" signature="3705:3732" ph="SELECT id, t... tag" />
-            <marker date="1524334767915" expanded="true" signature="3830:3859" ph="SELECT id, t... question" />
-            <marker date="1524334767915" expanded="true" signature="4160:4215" ph="INSERT INTO question_tag... " />
+            <marker date="1524334989533" expanded="true" signature="571:732" ph="CREATE TABLE... question" />
+            <marker date="1524334989533" expanded="true" signature="817:974" ph="CREATE TABLE... tag" />
+            <marker date="1524334989533" expanded="true" signature="1064:1338" ph="CREATE TABLE... vote" />
+            <marker date="1524334989533" expanded="true" signature="1435:1775" ph="CREATE TABLE... question_tag" />
+            <marker date="1524334989533" expanded="true" signature="1968:2028" ph="INSERT INTO tag... " />
+            <marker date="1524334989533" expanded="true" signature="2276:2332" ph="INSERT INTO question... " />
+            <marker date="1524334989533" expanded="true" signature="2625:2687" ph="INSERT INTO question... " />
+            <marker date="1524334989533" expanded="true" signature="2901:3055" ph="SELECT vote.... vote" />
+            <marker date="1524334989533" expanded="true" signature="3151:3182" ph="DELETE FROM vote... " />
+            <marker date="1524334989533" expanded="true" signature="3283:3433" ph="SELECT quest... question" />
+            <marker date="1524334989533" expanded="true" signature="3301:3350" ph="SELECT * FRO... queestion" />
+            <marker date="1524334989533" expanded="true" signature="3533:3568" ph="DELETE FROM question... " />
+            <marker date="1524334989533" expanded="true" signature="3705:3732" ph="SELECT id, t... tag" />
+            <marker date="1524334989533" expanded="true" signature="3830:3859" ph="SELECT id, t... question" />
+            <marker date="1524334989533" expanded="true" signature="4160:4215" ph="INSERT INTO question_tag... " />
           </folding>
         </state>
       </provider>
